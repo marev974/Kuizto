@@ -1,0 +1,52 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/grilleGenerale"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/textePrincipal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Rechercher par"
+        android:textColor="#ff3642b3"
+        android:textSize="30sp"
+        android:textStyle="bold" />
+
+    <LinearLayout
+       
+        android:id="@+id/grilleIng"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textePrincipal"
+        android:orientation="vertical" >
+
+        <Button
+            android:id="@+id/hideShowIng"
+            style="hideButton"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Ingrédients" />
+
+        <EditText
+            android:id="@+id/ingredientRentre"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:hint="Ecrivez votre ingredient"
+            android:inputType="textMultiLine"
+            android:lines="1" />
+
+        <Button
+            android:id="@+id/RechercherIng"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:gravity="right"
+            android:text="Rechercher" />
+    </LinearLayout>
+
+</RelativeLayout>

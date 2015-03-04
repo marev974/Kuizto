@@ -1,0 +1,35 @@
+
+
+
+
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/titre"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Résultat de la recherche"
+        android:textSize="20sp"
+        android:textColor="#ff2222ff"
+        android:textStyle="bold"
+        android:gravity="center"/>
+
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/recetteList"
+        android:choiceMode="singleChoice"
+        android:layout_below="@+id/titre">
+
+
+    </ListView>
+
+
+</LinearLayout>
+
