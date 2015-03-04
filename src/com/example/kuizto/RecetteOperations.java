@@ -173,6 +173,7 @@ public class RecetteOperations {
 			lesRecettes = getRecettewithIngredient(nom_ingredient);
 
 			// S'il n'y a que le type qui est renseigné, on exécute la méthode
+			
 			// getRecettewithType()
 		} else if (nom_ingredient == "") {
 			lesRecettes = getRecettewithType(unType);
