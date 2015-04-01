@@ -5,17 +5,17 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-public class DatabaseHandler extends SQLiteOpenHelper {
+public class DatabaseHandler extends SQLiteOpenHelper{
 
 	private static DatabaseHandler sInstance;
 
-	// Version de la base de données
+	// Version de la base de donnï¿½es
 	private static final int VERSION_BASE_DE_DONNEES = 1;
 
-	// Nom du fichier contenant la base de données
+	// Nom du fichier contenant la base de donnï¿½es
 	private static final String NOM_BASE_DE_DONNEES = "baserecettes.db";
 
-	// Nom des tables qui seront créées dans la base de données
+	// Nom des tables qui seront crï¿½ï¿½es dans la base de donnï¿½es
 	private static final String TABLE_RECETTES = "RECETTES";
 	private static final String TABLE_REC_ING = "RELATION_REC_ING";
 
@@ -30,23 +30,29 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	private static final String TITRE_ING = "TITRE";
 	private static final String INGREDIENT = "INGREDIENT";
 	private static final String QUANTITE = "QUANTITE";
+    private static final String UNITE = "UNITE";
 
-	// Requête SQL de création de la table "RECETTES" dans la base de données
-	private static final String REQUETE_CREATION_TABLE_REC = "CREATE TABLE "
-			+ TABLE_RECETTES + "(" + ID
-			+ " INTEGER PRIMARY KEY AUTOINCREMENT, " + TITRE
-			+ " TEXT NOT NULL, " + TYPE + " TEXT NOT NULL, " + TpsPreparation
-			+ " INTEGER, " + CONTENU + " TEXT NOT NULL) ;";
 
-	// Requête SQL de création de la table "RELATION_REC_ING" dans la base de
-	// données
-	private static final String REQUETE_CREATION_TABLE_ING = "CREATE TABLE "
-			+ TABLE_REC_ING + "(" + TITRE_ING + " TEXT, " + INGREDIENT
-			+ " TEXT NOT NULL, " + QUANTITE + " REAL) ;";
+	// Requï¿½te SQL de crï¿½ation de la table "RECETTES" dans la base de donnï¿½es 
+	private static final String REQUETE_CREATION_TABLE_REC = 
+			"CREATE TABLE " + TABLE_RECETTES + 
+			"(" + ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+			TITRE + " TEXT NOT NULL, " +  
+			TYPE + " TEXT NOT NULL, " +  
+			TpsPreparation + " INTEGER, " +
+			CONTENU + " TEXT NOT NULL) ;";
+
+	// Requï¿½te SQL de crï¿½ation de la table "RELATION_REC_ING" dans la base de donnï¿½es 
+	private static final String REQUETE_CREATION_TABLE_ING = 
+			"CREATE TABLE " + TABLE_REC_ING + 
+			"(" + TITRE_ING + " TEXT, " +
+			INGREDIENT + " TEXT NOT NULL, " +
+                    UNITE + " TEXT, " +
+                    QUANTITE + " REAL) ;";
 
 	public static DatabaseHandler getInstance(Context context) {
 
-		// Use the application context, which will ensure that you
+		// Use the application context, which will ensure that you 
 		// don't accidentally leak an Activity's context.
 		// See this article for more information: http://bit.ly/6LRzfx
 		if (sInstance == null) {
@@ -55,25 +61,26 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		return sInstance;
 	}
 
-	// Constructeur de la classse DatabaseHandler
+	// Constructeur de la classse DatabaseHandler	
 	public DatabaseHandler(Context context) {
 		super(context, NOM_BASE_DE_DONNEES, null, VERSION_BASE_DE_DONNEES);
 	}
 
-	// Création des tables "RECETTES" et "RELATION_REC_ING" dans la base de
-	// données
+
+	// Crï¿½ation des tables "RECETTES" et "RELATION_REC_ING" dans la base de donnï¿½es
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		db.execSQL(REQUETE_CREATION_TABLE_REC);
 		db.execSQL(REQUETE_CREATION_TABLE_ING);
 	}
 
-	// Mise à jour de la base de données
+
+	// Mise ï¿½ jour de la base de donnï¿½es
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		Log.w("Content provider database", "Upgrading database from version "
-				+ oldVersion + " to " + newVersion
-				+ ", which will destroy all old data");
+		Log.w("Content provider database",  
+				"Upgrading database from version " + oldVersion + " to "  
+						+ newVersion + ", which will destroy all old data");  
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_RECETTES + ";");
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_REC_ING + ";");
 		onCreate(db);
@@ -96,7 +103,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	public static String getTpspreparation() {
 		return TpsPreparation;
 	}
-
+	
 	public static String getContenu() {
 		return CONTENU;
 	}
@@ -118,6 +125,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	public static String getQuantite() {
 		return QUANTITE;
 	}
+
+    public static String getUnite() {
+        return UNITE;
+    }
 
 	public static String getTableRecIng() {
 		return TABLE_REC_ING;

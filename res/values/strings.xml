@@ -7,5 +7,9 @@
     <string name="title_activity_result">ResultActivity</string>
     <string name="title_activity_critere_et_choix">CritereEtChoix</string>
     <string name="title_activity_liste_recettes">ListeRecettes</string>
+    <string name="title_activity_administrateur">Administrateur</string>
+    <string name="title_activity_affichage_recette">AffichageRecette</string>
+    <string name="title_activity_ecriture">Ecriture</string>
+    <string name="title_activity_main">MainActivity</string>
 
 </resources>

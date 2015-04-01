@@ -16,19 +16,20 @@ public class RecetteOperations {
 		dbHelper = new DatabaseHandler(context);
 	}
 
-	// Création de la base de données avec un accès en lecture et écriture
+	// Crï¿½ation de la base de donnï¿½es avec un accï¿½s en lecture et ï¿½criture
 	public void open() throws SQLException {
 		database = dbHelper.getWritableDatabase();
 	}
 
-	// Fermeture de la connexion à la base de données
+	// Fermeture de la connexion ï¿½ la base de donnï¿½es
 	public void close() {
 		dbHelper.close();
 	}
 
-	// Méthode pour ajouter une recette à la table de données "RECETTES"
+	// Mï¿½thode pour ajouter une recette ï¿½ la table de donnï¿½es "RECETTES"
 	public long addRecette(Recette rec) {
 
+		// L'objet valeurs contient les donnï¿½es ï¿½ ajouter ï¿½ la table
 		ContentValues valeurs = new ContentValues();
 
 		// Initialisation de la variable valeurs avec les couples de valeurs
@@ -48,7 +49,7 @@ public class RecetteOperations {
 		return recetteId;
 	}
 
-	// Méthode pour ajouter un enregistrement à la table de données
+	// Mï¿½thode pour ajouter un enregistrement ï¿½ la table de donnï¿½e
 	// "RELATION_REC_ING"
 	public void addEntree(Recette rec) {
 
@@ -57,6 +58,7 @@ public class RecetteOperations {
 		// - (TITRE, titre)
 		// - (INGREDIENT, ingredient)
 		// - (QUANTITE, quantite)
+        // - (UNITE, unite)
 		for (int i = 0; i < rec.getLesIngredients().size(); i++) {
 			ContentValues valeurs = new ContentValues();
 			valeurs.put(dbHelper.getTitre_Ing(), rec.getTitre());
@@ -64,31 +66,33 @@ public class RecetteOperations {
 					.get(i).getNom());
 			valeurs.put(dbHelper.getQuantite(), rec.getLesIngredients().get(i)
 					.getQuantite());
+            valeurs.put(dbHelper.getUnite(), rec.getLesIngredients().get(i)
+                    .getUnite());
 
-			// Insertion de l'enregistrement dans la table "RELATION_REC_ING"
+            // Insertion de l'enregistrement dans la table "RELATION_REC_ING"
 			long entree = database.insert(dbHelper.getTableRecIng(), null,
 					valeurs);
 		}
 	}
 
-	// Pour récupérer une recette grâce à son ingrédient
+	// Pour rï¿½cupï¿½rer une recette grï¿½ce ï¿½ son ingrï¿½dient
 	public Vector<Recette> getRecettewithIngredient(String nom_ingredient) {
 
-		// On crée un vecteur de Recette qui contiendra toutes les recettes qui
-		// résultent de la recherche
+		// On crï¿½e un vecteur de Recette qui contiendra toutes les recettes qui
+		// rï¿½sultent de la recherche
 		Vector<Recette> lesRecettes = new Vector<Recette>();
 
-		// On exécute la requête dont le résultat sera stocké dans la variable
+		// On exï¿½cute la requï¿½te dont le rï¿½sultat sera stockï¿½ dans la variable
 		// cursor
 		Cursor cursor = dbHelper.getReadableDatabase().rawQuery(
-				"SELECT RECETTES.TITRE, RECETTES.TYPE "
+				"SELECT RECETTES.TITRE, RECETTES.TYPE, RECETTES.TpsPreparation "
 						+ "FROM  RELATION_REC_ING,RECETTES "
 						+ "WHERE RELATION_REC_ING.INGREDIENT = '"
 						+ nom_ingredient
 						+ "' and RELATION_REC_ING.TITRE = RECETTES.TITRE;",
 
 				new String[] {});
-		// On récupère les valeurs des colonnes des enregistrements stockés dans
+		// On rï¿½cupï¿½re les valeurs des colonnes des enregistrements stockï¿½s dans
 		// l'objet cursor.
 		// On construit un vecteur de Recette
 		int numeroColonneTitre = cursor.getColumnIndexOrThrow(dbHelper
@@ -100,7 +104,7 @@ public class RecetteOperations {
 
 		if (cursor.moveToFirst() == true) {
 			do {
-				// On crée une recette on lui affecte toutes les informations
+				// On crï¿½e une recette on lui affecte toutes les informations
 				// contenues dans le cursor
 				String titre = cursor.getString(numeroColonneTitre);
 				String type = cursor.getString(numeroColonneType);
@@ -113,14 +117,14 @@ public class RecetteOperations {
 		return lesRecettes;
 	}
 
-	// Pour récupérer une recette grâce à son type (entrée, plat ou dessert)
+	// Pour rï¿½cupï¿½rer une recette grï¿½ce ï¿½ son type (entrï¿½e, plat ou dessert)
 	public Vector<Recette> getRecettewithType(String unType) {
 
-		// On crée un vecteur de Recette qui contiendra toutes les recettes qui
-		// résultent de la recherche
+		// On crï¿½e un vecteur de Recette qui contiendra toutes les recettes qui
+		// rï¿½sultent de la recherche
 		Vector<Recette> lesRecettes = new Vector<Recette>();
 
-		// La requête récupère toutes les informations sur le recette-résultat
+		// La requï¿½te rï¿½cupï¿½re toutes les informations sur le recette-rï¿½sultat
 		// de la recherche
 		String tabColonne[] = new String[4];
 		tabColonne[0] = dbHelper.getId();
@@ -128,13 +132,13 @@ public class RecetteOperations {
 		tabColonne[2] = dbHelper.getType();
 		tabColonne[3] = dbHelper.getTpspreparation();
 
-		// On exécute la requête dont le résultat sera stocké dans la variable
+		// On exï¿½cute la requï¿½te dont le rï¿½sultat sera stockï¿½ dans la variable
 		// cursor
 		Cursor cursor = database.query(dbHelper.getTableRecettes(), tabColonne,
 				dbHelper.getType() + " LIKE \"" + unType + "\"", null, null,
 				null, null);
 
-		// On récupère les valeurs des colonnes des enregistrements stockés dans
+		// On rï¿½cupï¿½re les valeurs des colonnes des enregistrements stockï¿½s dans
 		// l'objet cursor
 		int numeroColonneId = cursor.getColumnIndexOrThrow(dbHelper.getId());
 		int numeroColonneTitre = cursor.getColumnIndexOrThrow(dbHelper
@@ -146,7 +150,7 @@ public class RecetteOperations {
 
 		if (cursor.moveToFirst() == true) {
 			do {
-				// On crée une recette on lui affecte toutes les informations
+				// On crï¿½e une recette on lui affecte toutes les informations
 				// contenues dans le cursor
 				String titre = cursor.getString(numeroColonneTitre);
 				String type = cursor.getString(numeroColonneType);
@@ -159,28 +163,28 @@ public class RecetteOperations {
 		return lesRecettes;
 	}
 
-	// Pour récupérer une recette grâce à un ingrédient et un type
+	// Pour rï¿½cupï¿½rer une recette grï¿½ce ï¿½ un ingrï¿½dient et un type
 	public Vector<Recette> getRecettewithIngredientAndType(
 			String nom_ingredient, String unType) {
 
-		// On crée un vecteur de Recette qui contiendra toutes les recettes qui
-		// résultent de la recherche
+		// On crï¿½e un vecteur de Recette qui contiendra toutes les recettes qui
+		// rï¿½sultent de la recherche
 		Vector<Recette> lesRecettes = new Vector<Recette>();
-
-		// S'il n'y a que l'ingrédient qui est renseigné, on exécute la méthode
+        unType = unType.toLowerCase();
+		// S'il n'y a que l'ingrï¿½dient qui est renseignï¿½, on exï¿½cute la mï¿½thode
 		// getRecettewithIngredient()
-		if (unType == "") {
+		if (unType.equals("") ) {
 			lesRecettes = getRecettewithIngredient(nom_ingredient);
 
-			// S'il n'y a que le type qui est renseigné, on exécute la méthode
-			
+			// S'il n'y a que le type qui est renseignï¿½, on exï¿½cute la mï¿½thode
+
 			// getRecettewithType()
-		} else if (nom_ingredient == "") {
+		} else if (nom_ingredient.equals("") ) {
 			lesRecettes = getRecettewithType(unType);
 
-			// Si on a un nom d'ingrédient et un nom de type :
+			// Si on a un nom d'ingrï¿½dient et un nom de type :
 		} else {
-			// On exécute la requête dont le résultat sera stocké dans la
+			// On exï¿½cute la requï¿½te dont le rï¿½sultat sera stockï¿½ dans la
 			// variable cursor
 			Cursor cursor = dbHelper.getReadableDatabase().rawQuery(
 					"SELECT RECETTES.TITRE, RECETTES.TYPE "
@@ -191,24 +195,24 @@ public class RecetteOperations {
 							+ "' and RELATION_REC_ING.TITRE = RECETTES.TITRE;",
 
 					new String[] {});
-			// On récupère les valeurs des colonnes des enregistrements stockés
+			// On rï¿½cupï¿½re les valeurs des colonnes des enregistrements stockï¿½s
 			// dans l'objet cursor.
 			// On construit un vecteur de Recette
 			int numeroColonneTitre = cursor.getColumnIndexOrThrow(dbHelper
 					.getTitre_Rec());
 			int numeroColonneType = cursor.getColumnIndexOrThrow(dbHelper
 					.getType());
-			int numeroColonneTps = cursor.getColumnIndexOrThrow(dbHelper
-					.getTpspreparation());
+			//int numeroColonneTps = cursor.getColumnIndexOrThrow(dbHelper
+					//.getTpspreparation());
 
 			if (cursor.moveToFirst() == true) {
 				do {
-					// On crée une recette on lui affecte toutes les
+					// On crï¿½e une recette on lui affecte toutes les
 					// informations contenues dans le cursor
 					String titre = cursor.getString(numeroColonneTitre);
 					String type = cursor.getString(numeroColonneType);
-					int tps = cursor.getInt(numeroColonneTps);
-					Recette rec = new Recette(titre, type, tps);
+					//int tps = cursor.getInt(numeroColonneTps);
+					Recette rec = new Recette(titre, type, 0);
 					lesRecettes.add(rec);
 				} while (cursor.moveToNext());
 			}
@@ -217,4 +221,102 @@ public class RecetteOperations {
 		}
 		return lesRecettes;
 	}
+
+	// Pour rï¿½cupï¿½rer une recette grï¿½ce ï¿½ son titre
+    public Recette getRecettewithTitre(String titre_recette) {
+
+        // On crï¿½e un vecteur de Recette qui contiendra toutes les recettes qui
+        // rï¿½sultent de la recherche
+        Recette laRecette=null;
+
+        // On exï¿½cute la requï¿½te dont le rï¿½sultat sera stockï¿½ dans la variable
+        // cursor
+        Cursor cursor = dbHelper.getReadableDatabase().rawQuery(
+                "SELECT TITRE, TYPE, TpsPreparation, CONTENU " + "FROM  RECETTES "
+                        + "WHERE TITRE = '" + titre_recette + "';",
+
+                new String[] {});
+        // On rï¿½cupï¿½re les valeurs des colonnes des enregistrements stockï¿½s dans
+        // l'objet cursor.
+        // On construit un vecteur de Recette
+        int numeroColonneTitre = cursor.getColumnIndexOrThrow(dbHelper
+                .getTitre_Rec());
+        int numeroColonneType = cursor.getColumnIndexOrThrow(dbHelper
+                .getType());
+        int numeroColonneTps = cursor.getColumnIndexOrThrow(dbHelper
+                .getTpspreparation());
+        int numeroColonneCont = cursor.getColumnIndexOrThrow(dbHelper
+                .getContenu());
+
+
+        if (cursor.moveToFirst() == true) {
+            do {
+                // On crï¿½e une recette on lui affecte toutes les informations
+                // contenues dans le cursor
+                String titre = cursor.getString(numeroColonneTitre);
+                String type = cursor.getString(numeroColonneType);
+                int tps = cursor.getInt(numeroColonneTps);
+                String contenu = cursor.getString(numeroColonneCont);
+                laRecette = new Recette(titre, type, tps);
+                laRecette.setContenu(contenu);
+
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return laRecette;
+    }
+
+    // Pour rï¿½cupï¿½rer une recette grï¿½ce ï¿½ son titre
+    public Vector<Ingredient> getIngredientwithTitre(String titre_recette) {
+
+        // On crï¿½e un vecteur de Recette qui contiendra toutes les recettes qui
+        // rï¿½sultent de la recherche
+        Vector<Ingredient> lesIngredients = new Vector<Ingredient>();
+
+
+        // La requï¿½te rï¿½cupï¿½re toutes les informations sur le recette-rï¿½sultat
+        // de la recherche
+        String tabColonne[] = new String[4];
+        tabColonne[0] = dbHelper.getTitre_Ing();
+        tabColonne[1] = dbHelper.getIngredient();
+        tabColonne[2] = dbHelper.getQuantite();
+        tabColonne[3] = dbHelper.getUnite();
+
+        // On exï¿½cute la requï¿½te dont le rï¿½sultat sera stockï¿½ dans la variable
+        // cursor
+        Cursor cursor = database.query(dbHelper.getTableRecIng(), tabColonne,
+                dbHelper.getTitre_Ing() + " LIKE \"" + titre_recette + "\"", null, null,
+                null, null);
+        /*// On exï¿½cute la requï¿½te dont le rï¿½sultat sera stockï¿½ dans la variable
+        // cursor
+        Cursor cursor = dbHelper.getReadableDatabase().rawQuery(
+                "SELECT INGREDIENT, QUANTITE, UNITE " + "FROM  RELATION_REC_ING "
+                        + "WHERE TITRE_ING = '" + titre_recette + "';",
+                new String[] {});*/
+
+        // On rï¿½cupï¿½re les valeurs des colonnes des enregistrements stockï¿½s dans
+        // l'objet cursor.
+        // On construit un vecteur de Recette
+        int numeroColonneIngredient = cursor.getColumnIndexOrThrow(dbHelper
+                .getIngredient());
+        int numeroColonneQuantite = cursor.getColumnIndexOrThrow(dbHelper
+                .getQuantite());
+        int numeroColonneUnite = cursor.getColumnIndexOrThrow(dbHelper
+                .getUnite());
+
+
+        if (cursor.moveToFirst() == true) do {
+            // On crï¿½e une recette on lui affecte toutes les informations
+            // contenues dans le cursor
+            String ingredient = cursor.getString(numeroColonneIngredient);
+            int quantite = cursor.getInt(numeroColonneQuantite);
+            String unite = cursor.getString(numeroColonneUnite);
+
+          Ingredient  ing = new Ingredient(ingredient, quantite, 0, unite);
+            lesIngredients.add(ing);
+
+        } while (cursor.moveToNext());
+        cursor.close();
+        return lesIngredients;
+    }
 }

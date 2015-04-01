@@ -1,52 +1,148 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/grilleGenerale"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/textePrincipal"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="Rechercher par"
-        android:textColor="#ff3642b3"
-        android:textSize="30sp"
-        android:textStyle="bold" />
+    android:layout_width="wrap_content"
+    android:layout_height="fill_parent"
+    android:id="@+id/grilleGenerale"
+    android:orientation="vertical"
+    android:background="#fffff7b9">
+<TextView
+    android:id="@+id/textePrincipal"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:text="Rechercher une recette"
+    android:textColor="#ff070103"
+    android:gravity="center"
+   android:textSize="35sp"
+    android:textStyle="bold"
+    android:layout_marginTop="20sp"
+    />
 
     <LinearLayout
-       
-        android:id="@+id/grilleIng"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textePrincipal"
-        android:orientation="vertical" >
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/grilleIng"
+    android:layout_below="@+id/textePrincipal" >
 
-        <Button
-            android:id="@+id/hideShowIng"
-            style="hideButton"
+        <TextView
+            android:id="@+id/rechercheIng"
+            android:text="Recherche par ingrédient"
+            android:textSize="25sp"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="Ingrédients" />
+            android:textStyle="bold"
+            android:textColor="#ffb91223"
+            android:background="#ffffcb0f"
+            android:layout_below="@+id/textePrincipal"
+            android:layout_marginTop="20sp"
+            android:padding="5dp"/>
+
+
 
         <EditText
             android:id="@+id/ingredientRentre"
-            android:layout_width="wrap_content"
+            android:layout_width="360dp"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:hint="Ecrivez votre ingredient"
+            android:hint="Ecrivez votre ingrédient (ex: oeufs, sucre,...)"
             android:inputType="textMultiLine"
-            android:lines="1" />
+            android:maxLines="1"
+            android:lines= "1"
+            android:layout_below="@+id/rechercheIng"
+            android:layout_marginTop="10sp"
+            />
 
-        <Button
-            android:id="@+id/RechercherIng"
-            android:layout_width="wrap_content"
+
+        <TextView
+            android:id="@+id/RechType"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:gravity="right"
-            android:text="Rechercher" />
-    </LinearLayout>
+            android:text="Recherche par type de plat"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            android:textColor="#ffb91223"
+            android:background="#ffffcb0f"
+            android:layout_below="@+id/textePrincipal"
+            android:layout_marginTop="20sp"
+            android:padding="5dp"/>
+
+
+    <RadioGroup
+            android:id="@+id/groupeType"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@+id/RechType"
+            android:layout_marginTop="15sp">
+
+            <RadioButton
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:text="Entrée"
+                android:textSize="17sp"
+                android:layout_marginLeft="15dp"
+                />
+            <RadioButton
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Plat principal"
+                android:checked="false"
+                android:textSize="17sp"
+                android:layout_marginLeft="15dp"
+                />
+            <RadioButton
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Dessert"
+                android:checked="false"
+                android:textSize="17sp"
+                android:layout_marginLeft="15dp"
+                />
+        </RadioGroup>
+
+    <Button
+        android:id="@+id/rechercherType"
+        android:layout_width="150sp"
+        android:layout_height="30sp"
+        android:text="Rechercher"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:layout_below="@id/groupeType"
+        android:layout_marginTop="30sp"
+        android:textColor="#ffffcb0f"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:background="#ffb91223"
+        android:textAlignment="center"
+        />
+
+</LinearLayout>
+
+    <TextView android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/titreListeRech"
+        android:layout_below="@+id/grilleIng"
+        android:layout_marginTop="15sp"
+        android:text="Recettes trouvées"
+        android:textColor="#ff070103"
+        android:textSize="30sp"
+        android:layout_centerHorizontal="true"
+        android:visibility="invisible"/>
+
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/recetteList"
+        android:choiceMode="singleChoice"
+        android:layout_below="@+id/titreListeRech"
+        android:layout_marginTop="10sp"
+
+        android:visibility="invisible">
+
+
+    </ListView>
 
 </RelativeLayout>
